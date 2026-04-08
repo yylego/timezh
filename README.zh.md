@@ -97,11 +97,17 @@ import (
 func main() {
 	// 字符串转时间
 	// 解析标准时间字符串
-	t1 := timezh.ST.Get时间("2025-05-16 19:11:45", timezh.TZ.CST)
+	t1, err := timezh.ST.Get时间("2025-05-16 19:11:45", timezh.TZ.CST)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Printf("解析的时间: %v\n", t1)
 
 	// 仅解析日期
-	t2 := timezh.ST.Get通过日期得到时间("2025-05-16", timezh.TZ.CST)
+	t2, err := timezh.ST.Get通过日期得到时间("2025-05-16", timezh.TZ.CST)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Printf("日期时间: %v\n", t2)
 
 	// 数字转时间
@@ -158,7 +164,10 @@ func main() {
 	fmt.Printf("最近工作日: %v\n", workdays) // 输出: ["2025-05-16", "2025-05-15", "2025-05-14", "2025-05-13", "2025-05-12"]
 
 	// 计算时间差
-	duration := timezh.SD.Get两字符串时间间隔("2025-05-16 20:00:00", "2025-05-16 19:00:00")
+	duration, err := timezh.SD.Get两字符串时间间隔("2025-05-16 20:00:00", "2025-05-16 19:00:00")
+	if err != nil {
+		panic(err)
+	}
 	hours := duration.Hours()
 	fmt.Printf("时间差: %.0f 小时\n", hours) // 输出: 1 小时
 }
@@ -194,10 +203,10 @@ func main() {
 
 字符串解析模块：
 
-- `Get时间(s标准时间 string, z时区位置 *time.Location) time.Time` - 解析 "2006-01-02 15:04:05"
-- `Get日期和分时(s标准时间没有秒数 string, z时区位置 *time.Location) time.Time` - 解析 "2006-01-02 15:04"
-- `Get通过日期得到时间(s标准日期 string, z时区位置 *time.Location) time.Time` - 解析 "2006-01-02"
-- `Get通过时刻得到当日时间(s标准时刻 string, z时区位置 *time.Location) time.Time` - 解析 "15:04:05"
+- `Get时间(s标准时间 string, z时区位置 *time.Location) (time.Time, error)` - 解析 "2006-01-02 15:04:05"
+- `Get日期和分时(s标准时间没有秒数 string, z时区位置 *time.Location) (time.Time, error)` - 解析 "2006-01-02 15:04"
+- `Get通过日期得到时间(s标准日期 string, z时区位置 *time.Location) (time.Time, error)` - 解析 "2006-01-02"
+- `Get通过时刻得到当日时间(s标准时刻 string, z时区位置 *time.Location) (time.Time, error)` - 解析 "15:04:05"
 
 #### NT - 数字转时间
 
@@ -237,7 +246,7 @@ func main() {
 
 计算字符串间的时间差：
 
-- `Get计算时间差(s1, s2 string, z时区位置 *time.Location) time.Duration`
+- `Get两字符串时间间隔(s开始时间, e结束时间 string) (time.Duration, error)`
 
 #### RS - 正则匹配
 
@@ -297,7 +306,10 @@ s时间字符串 := timezh.RS.Get匹配时间(text)
 ### 计算时间差
 
 ```go
-duration := timezh.SD.Get计算时间差("2025-05-16 20:00:00", "2025-05-16 19:00:00", timezh.TZ.CST)
+duration, err := timezh.SD.Get两字符串时间间隔("2025-05-16 20:00:00", "2025-05-16 19:00:00")
+if err != nil {
+	panic(err)
+}
 hours := duration.Hours()
 // 输出: 1 小时
 ```

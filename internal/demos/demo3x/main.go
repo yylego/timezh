@@ -26,7 +26,10 @@ func main() {
 	fmt.Printf("Recent Workdays: %v\n", workdays) // Output: ["2025-05-16", "2025-05-15", "2025-05-14", "2025-05-13", "2025-05-12"]
 
 	// Calculate time difference (计算时间差)
-	duration := timezh.SD.Get两字符串时间间隔("2025-05-16 20:00:00", "2025-05-16 19:00:00")
+	duration, err := timezh.SD.Get两字符串时间间隔("2025-05-16 20:00:00", "2025-05-16 19:00:00")
+	if err != nil {
+		panic(err)
+	}
 	hours := duration.Hours()
 	fmt.Printf("Time Difference: %.0f hours\n", hours) // Output: 1 hours
 }

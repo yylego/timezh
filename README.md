@@ -97,11 +97,17 @@ import (
 func main() {
 	// String to Time conversion (字符串转时间)
 	// Parse standard time string (解析标准时间字符串)
-	t1 := timezh.ST.Get时间("2025-05-16 19:11:45", timezh.TZ.CST)
+	t1, err := timezh.ST.Get时间("2025-05-16 19:11:45", timezh.TZ.CST)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Printf("Parsed Time: %v\n", t1)
 
 	// Parse just date (仅解析日期)
-	t2 := timezh.ST.Get通过日期得到时间("2025-05-16", timezh.TZ.CST)
+	t2, err := timezh.ST.Get通过日期得到时间("2025-05-16", timezh.TZ.CST)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Printf("Date Time: %v\n", t2)
 
 	// Numeric to Time conversion (数字转时间)
@@ -158,7 +164,10 @@ func main() {
 	fmt.Printf("Recent Workdays: %v\n", workdays) // Output: ["2025-05-16", "2025-05-15", "2025-05-14", "2025-05-13", "2025-05-12"]
 
 	// Calculate time difference (计算时间差)
-	duration := timezh.SD.Get两字符串时间间隔("2025-05-16 20:00:00", "2025-05-16 19:00:00")
+	duration, err := timezh.SD.Get两字符串时间间隔("2025-05-16 20:00:00", "2025-05-16 19:00:00")
+	if err != nil {
+		panic(err)
+	}
 	hours := duration.Hours()
 	fmt.Printf("Time Difference: %.0f hours\n", hours) // Output: 1 hours
 }
@@ -194,10 +203,10 @@ Time formatting module with predefined format templates:
 
 String parsing module:
 
-- `Get时间(s标准时间 string, z时区位置 *time.Location) time.Time` - Parse "2006-01-02 15:04:05"
-- `Get日期和分时(s标准时间没有秒数 string, z时区位置 *time.Location) time.Time` - Parse "2006-01-02 15:04"
-- `Get通过日期得到时间(s标准日期 string, z时区位置 *time.Location) time.Time` - Parse "2006-01-02"
-- `Get通过时刻得到当日时间(s标准时刻 string, z时区位置 *time.Location) time.Time` - Parse "15:04:05"
+- `Get时间(s标准时间 string, z时区位置 *time.Location) (time.Time, error)` - Parse "2006-01-02 15:04:05"
+- `Get日期和分时(s标准时间没有秒数 string, z时区位置 *time.Location) (time.Time, error)` - Parse "2006-01-02 15:04"
+- `Get通过日期得到时间(s标准日期 string, z时区位置 *time.Location) (time.Time, error)` - Parse "2006-01-02"
+- `Get通过时刻得到当日时间(s标准时刻 string, z时区位置 *time.Location) (time.Time, error)` - Parse "15:04:05"
 
 #### NT - Numeric to Time (数字转时间)
 
@@ -237,7 +246,7 @@ Compare time strings:
 
 Calculate time differences between strings:
 
-- `Get计算时间差(s1, s2 string, z时区位置 *time.Location) time.Duration`
+- `Get两字符串时间间隔(s开始时间, e结束时间 string) (time.Duration, error)`
 
 #### RS - Regex String (正则匹配)
 
@@ -297,7 +306,10 @@ s时间字符串 := timezh.RS.Get匹配时间(text)
 ### Calculate Time Difference
 
 ```go
-duration := timezh.SD.Get计算时间差("2025-05-16 20:00:00", "2025-05-16 19:00:00", timezh.TZ.CST)
+duration, err := timezh.SD.Get两字符串时间间隔("2025-05-16 20:00:00", "2025-05-16 19:00:00")
+if err != nil {
+	panic(err)
+}
 hours := duration.Hours()
 // Output: 1 h
 ```

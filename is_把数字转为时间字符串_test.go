@@ -3,8 +3,8 @@ package timezh_test
 import (
 	"testing"
 
-	"github.com/yylego/timezh"
 	"github.com/stretchr/testify/require"
+	"github.com/yylego/timezh"
 )
 
 func Test_is把数字转为时间字符串_Get日期(t *testing.T) {

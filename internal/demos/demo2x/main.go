@@ -10,11 +10,17 @@ import (
 func main() {
 	// String to Time conversion (字符串转时间)
 	// Parse standard time string (解析标准时间字符串)
-	t1 := timezh.ST.Get时间("2025-05-16 19:11:45", timezh.TZ.CST)
+	t1, err := timezh.ST.Get时间("2025-05-16 19:11:45", timezh.TZ.CST)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Printf("Parsed Time: %v\n", t1)
 
 	// Parse date only (仅解析日期)
-	t2 := timezh.ST.Get通过日期得到时间("2025-05-16", timezh.TZ.CST)
+	t2, err := timezh.ST.Get通过日期得到时间("2025-05-16", timezh.TZ.CST)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Printf("Date Time: %v\n", t2)
 
 	// Number to Time conversion (数字转时间)
