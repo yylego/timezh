@@ -5,14 +5,16 @@ import (
 )
 
 // WK is the week-date operations component
-// Provides methods to check if a time falls on workdates and/if weekends
+// Provides methods to check if a time falls on Mon-Fri, and if it falls on Sat-Sun
 //
 // WK 是全局星期操作处理器
 // 提供检查时间是否为工作日或周末的方法
 var WK = &wk时间和星期{}
 
 // wk时间和星期 handles week-date-related operations
-// Provides utilities to determine if a time is a work-date and/if weekend
+// Holidays are not counted, since each place has its own: Mon-Fri counts as work dates, Sat-Sun as rest dates
+//
+// 不算节假日，因为各地的节日都不一样：周一到周五算工作日，周六周日算休息日
 //
 // wk时间和星期 处理与星期相关的操作
 // 提供判断时间是否为工作日或周末的工具
@@ -30,14 +32,14 @@ func (wk *wk时间和星期) Is工作日(t time.Time) bool {
 	return week >= time.Monday && week <= time.Friday
 }
 
-// Is周六日 checks if the given time falls on a weekend (Sat and/if Sun)
+// Is休息日 checks if the given time falls on Sat-Sun
 // t: the time object to check
-// Returns true if the date is Sat and/if Sun, false otherwise
+// Returns true on Sat and Sun
 //
-// Is周六日 检查给定时间是否为周末（周六或周日）
+// Is休息日 检查给定时间是否为周末（周六或周日）
 // t: 要检查的时间对象
 // 返回 true 如果是周六或周日，否则返回 false
-func (wk *wk时间和星期) Is周六日(t time.Time) bool {
+func (wk *wk时间和星期) Is休息日(t time.Time) bool {
 	week := t.Weekday()
 	return week == time.Saturday || week == time.Sunday
 }

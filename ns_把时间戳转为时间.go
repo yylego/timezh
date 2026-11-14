@@ -9,53 +9,37 @@ import "time"
 // 提供将 Unix 时间戳转换为时间对象的方法
 var NS = &ns把时间戳转为时间{}
 
-// ns把时间戳转为时间 converts Unix timestamps to time objects
-// Supports nanosecond, microsecond, millisecond, and second timestamp formats
+// ns把时间戳转为时间 converts Unix timestamps to time objects in the given zone
+// The zone is a must, like the rest of the package: the same timestamp gives a different date in each zone
 //
-// ns把时间戳转为时间 将 Unix 时间戳转换为时间对象
-// 支持纳秒、微秒、毫秒和秒级时间戳格式
+// ns把时间戳转为时间 将 Unix 时间戳转换为指定时区的时间对象
+// 跟包里其它函数一样必须传时区：同一个时间戳在不同时区里日期可能不同
 type ns把时间戳转为时间 struct{}
 
-// Get纳秒时间 converts nanosecond timestamp to time object
-// ns纳秒数: Unix timestamp in nanoseconds
-// Returns corresponding time object
+// Get纳秒时间 converts a Unix timestamp in nanoseconds to a time in the zone
 //
-// Get纳秒时间 将纳秒级时间戳转换为时间对象
-// ns纳秒数: 纳秒级 Unix 时间戳
-// 返回对应的时间对象
-func (T *ns把时间戳转为时间) Get纳秒时间(ns纳秒数 int64) time.Time {
-	return time.Unix(ns纳秒数/1e9, ns纳秒数%1e9)
+// Get纳秒时间 将纳秒级 Unix 时间戳转换为该时区的时间
+func (ns *ns把时间戳转为时间) Get纳秒时间(ns纳秒数 int64, z时区位置 *time.Location) time.Time {
+	return time.Unix(0, ns纳秒数).In(z时区位置)
 }
 
-// Get微秒时间 converts microsecond timestamp to time object
-// ms微秒数: Unix timestamp in microseconds
-// Returns corresponding time object
+// Get微秒时间 converts a Unix timestamp in microseconds to a time in the zone
 //
-// Get微秒时间 将微秒级时间戳转换为时间对象
-// ms微秒数: 微秒级 Unix 时间戳
-// 返回对应的时间对象
-func (T *ns把时间戳转为时间) Get微秒时间(ms微秒数 int64) time.Time {
-	return time.UnixMicro(ms微秒数)
+// Get微秒时间 将微秒级 Unix 时间戳转换为该时区的时间
+func (ns *ns把时间戳转为时间) Get微秒时间(us微秒数 int64, z时区位置 *time.Location) time.Time {
+	return time.UnixMicro(us微秒数).In(z时区位置)
 }
 
-// Get毫秒时间 converts millisecond timestamp to time object
-// ms毫秒数: Unix timestamp in milliseconds
-// Returns corresponding time object
+// Get毫秒时间 converts a Unix timestamp in milliseconds to a time in the zone
 //
-// Get毫秒时间 将毫秒级时间戳转换为时间对象
-// ms毫秒数: 毫秒级 Unix 时间戳
-// 返回对应的时间对象
-func (T *ns把时间戳转为时间) Get毫秒时间(ms毫秒数 int64) time.Time {
-	return time.UnixMilli(ms毫秒数)
+// Get毫秒时间 将毫秒级 Unix 时间戳转换为该时区的时间
+func (ns *ns把时间戳转为时间) Get毫秒时间(ms毫秒数 int64, z时区位置 *time.Location) time.Time {
+	return time.UnixMilli(ms毫秒数).In(z时区位置)
 }
 
-// Get秒数时间 converts second timestamp to time object
-// sn总秒数: Unix timestamp in seconds
-// Returns corresponding time object
+// Get秒数时间 converts a Unix timestamp in seconds to a time in the zone
 //
-// Get秒数时间 将秒级时间戳转换为时间对象
-// sn总秒数: 秒级 Unix 时间戳
-// 返回对应的时间对象
-func (T *ns把时间戳转为时间) Get秒数时间(sn总秒数 int64) time.Time {
-	return time.Unix(sn总秒数, 0)
+// Get秒数时间 将秒级 Unix 时间戳转换为该时区的时间
+func (ns *ns把时间戳转为时间) Get秒数时间(sn总秒数 int64, z时区位置 *time.Location) time.Time {
+	return time.Unix(sn总秒数, 0).In(z时区位置)
 }

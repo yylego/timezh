@@ -1,8 +1,7 @@
 package timezh
 
 import (
-	"fmt"
-	"strconv"
+	"time"
 
 	"github.com/yylego/erero"
 )
@@ -21,69 +20,54 @@ var SI = &si把字符串时间转换整数{}
 // 从时间字符串提取年、月、日、时、分、秒数值
 type si把字符串时间转换整数 struct{}
 
-// Get通过日期得到年份 extracts date-element from a date string
+// Get年份 extracts the 4 leading digits of the date as an int, such as 2021
 // s标准日期: date string in format "2006-01-02"
 //
-// Get通过日期得到年份 从日期字符串提取年份
+// Get年份 从日期字符串提取年份
 // s标准日期: "2006-01-02" 格式的日期字符串
-func (si *si把字符串时间转换整数) Get通过日期得到年份(s标准日期 string) (v年份 int, err error) {
-	if !RS.Match日期(s标准日期) {
-		return 0, erero.Errorf("日期格式不对: %s", s标准日期)
-	}
-	v年份, err = strconv.Atoi(s标准日期[0:4])
+func (si *si把字符串时间转换整数) Get年份(s标准日期 string) (v年份 int, err error) {
+	v时间, err := TS.D日期.Get转为时间(s标准日期, time.UTC)
 	if err != nil {
 		return 0, erero.WithMessage(err, "日期格式不对")
 	}
-	return v年份, nil
+	return v时间.Year(), nil
 }
 
-// Get通过日期得到年份月份哪日 extracts date-element, month, and date from a date string
+// Get拆分日期 extracts the three numbers of a date string
 // s标准日期: date string in format "2006-01-02"
 //
-// Get通过日期得到年份月份哪日 从日期字符串提取年、月、日
+// Get拆分日期 从日期字符串提取年、月、日
 // s标准日期: "2006-01-02" 格式的日期字符串
-func (si *si把字符串时间转换整数) Get通过日期得到年份月份哪日(s标准日期 string) (v年份, v月份, v几号 int, err error) {
-	num, err := fmt.Sscanf(s标准日期, "%4d-%2d-%2d", &v年份, &v月份, &v几号)
+func (si *si把字符串时间转换整数) Get拆分日期(s标准日期 string) (v年份, v月份, v几号 int, err error) {
+	v时间, err := TS.D日期.Get转为时间(s标准日期, time.UTC)
 	if err != nil {
 		return 0, 0, 0, erero.WithMessage(err, "日期格式不对")
 	}
-	if num != 3 {
-		return 0, 0, 0, erero.Errorf("日期格式不对: 解析到 %d 个字段, 期望 3 个", num)
-	}
-	return v年份, v月份, v几号, nil
+	return v时间.Year(), int(v时间.Month()), v时间.Day(), nil
 }
 
-// Get通过时刻得到几时几分秒数 extracts time-value, minute, and second from a time-of-moment string
+// Get拆分时刻 extracts the three numbers of a time-of-moment string
 // s标准时刻: time-of-moment string in format "15:04:05"
 //
-// Get通过时刻得到几时几分秒数 从时刻字符串提取时、分、秒
+// Get拆分时刻 从时刻字符串提取时、分、秒
 // s标准时刻: "15:04:05" 格式的时刻字符串
-func (si *si把字符串时间转换整数) Get通过时刻得到几时几分秒数(s标准时刻 string) (v几时, v几分, v秒数 int, err error) {
-	num, err := fmt.Sscanf(s标准时刻, "%2d:%2d:%2d", &v几时, &v几分, &v秒数)
+func (si *si把字符串时间转换整数) Get拆分时刻(s标准时刻 string) (v几时, v几分, v秒数 int, err error) {
+	v时间, err := TS.T时刻.Get转为时间(s标准时刻, time.UTC)
 	if err != nil {
 		return 0, 0, 0, erero.WithMessage(err, "时刻格式不对")
 	}
-	if num != 3 {
-		return 0, 0, 0, erero.Errorf("时刻格式不对: 解析到 %d 个字段, 期望 3 个", num)
-	}
-	return v几时, v几分, v秒数, nil
+	return v时间.Hour(), v时间.Minute(), v时间.Second(), nil
 }
 
-// Get通过时间得到整数 extracts complete date/time components from a datetime string
+// Get拆分时间 extracts each date/time component from a datetime string
 // s标准时间: datetime string in format "2006-01-02 15:04:05"
 //
-// Get通过时间得到整数 从日期时间字符串提取所有日期/时间组件
+// Get拆分时间 从日期时间字符串提取所有日期/时间组件
 // s标准时间: "2006-01-02 15:04:05" 格式的日期时间字符串
-func (si *si把字符串时间转换整数) Get通过时间得到整数(s标准时间 string) (v年份, v月份, v几号, v几时, v几分, v秒数 int, err error) {
-	if !RS.Match时间(s标准时间) {
-		return 0, 0, 0, 0, 0, 0, erero.Errorf("时间格式不对: %s", s标准时间)
-	}
-	num, err := fmt.Sscanf(s标准时间, "%4d-%2d-%2d %2d:%2d:%2d", &v年份, &v月份, &v几号, &v几时, &v几分, &v秒数)
+func (si *si把字符串时间转换整数) Get拆分时间(s标准时间 string) (v年份, v月份, v几号, v几时, v几分, v秒数 int, err error) {
+	v时间, err := TS.T时间.Get转为时间(s标准时间, time.UTC)
 	if err != nil {
 		return 0, 0, 0, 0, 0, 0, erero.WithMessage(err, "时间格式不对")
 	}
-	if num != 6 {
-		return 0, 0, 0, 0, 0, 0, erero.Errorf("时间格式不对: 解析到 %d 个字段, 期望 6 个", num)
-	}
-	return v年份, v月份, v几号, v几时, v几分, v秒数, nil
+	return v时间.Year(), int(v时间.Month()), v时间.Day(), v时间.Hour(), v时间.Minute(), v时间.Second(), nil
 }
